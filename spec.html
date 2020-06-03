@@ -16,17 +16,9 @@
         padding: 0;
       }
     </style>
-       <title>OGC API - Processes - Part 1: Core</title>
   </head>
   <body>
-  <script src="https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js"> </script>
-  <script type="text/javascript">
-    Redoc.init('https://ghobona.github.io/wps-rest-binding/openapi.yaml', {
-      expandResponses:"200,201,202,203,204",
-      pathInMiddlePanel: true,
-      hideDownloadButton: true
-    }, document.getElementById('content'));
-  </script>
-    
+    <redoc spec-url='http://petstore.swagger.io/v2/swagger.json'></redoc>
+    <script src="https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js"> </script>
   </body>
 </html>
