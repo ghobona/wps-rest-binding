@@ -1,6 +1,0 @@
-[appendix]
-:appendix-caption: Annex
-[[Bibliography]]
-= Bibliography
-
-* [[rfc3986]] Berners-Lee, T., Fielding, R., Masinter, L.: *IETF RFC 3986 - Uniform Resource Identifier (URI): Generic Syntax*, http://tools.ietf.org/rfc/rfc3986.txt

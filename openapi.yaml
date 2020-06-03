@@ -1,178 +1,237 @@
 openapi: 3.0.2
 info:
-  title: The OGC API - Processes
-  version: "1.0-draft.3"
-  description: |-
-    WARNING - THIS IS WORK IN PROGRESS\
+  version: 1.0.0
+  title: Example.com
+  termsOfService: 'https://example.com/terms/'
   contact:
-    name: Benjamin Pross
-    email: b.pross@52north.org
+    name: Example 1
+    email: contact@example.com
+    url: 'http://example.com/contact'
   license:
-    name: OGC license
-    url: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/LICENSE"
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+  x-logo:
+    url: 'https://redocly.github.io/openapi-template/logo.png'
+  description: >
+    This is an **example** API to demonstrate features of OpenAPI specification
+
+    # Introduction
+
+    This API definition is intended to to be a good starting point for
+    describing your API in 
+
+    [OpenAPI/Swagger
+    format](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md).
+
+    It also demonstrates features of
+    [create-openapi-repo](https://github.com/Redocly/create-openapi-repo) tool
+    and 
+
+    [Redoc](https://github.com/Redocly/Redoc) documentation engine. So beyond
+    the standard OpenAPI syntax we use a few 
+
+    [vendor
+    extensions](https://github.com/Redocly/Redoc/blob/master/docs/redoc-vendor-extensions.md).
+
+
+    # OpenAPI Specification
+
+    The goal of The OpenAPI Specification is to define a standard,
+    language-agnostic interface to REST APIs which
+
+    allows both humans and computers to discover and understand the capabilities
+    of the service without access to source
+
+    code, documentation, or through network traffic inspection. When properly
+    defined via OpenAPI, a consumer can 
+
+    understand and interact with the remote service with a minimal amount of
+    implementation logic. Similar to what
+
+    interfaces have done for lower-level programming, OpenAPI removes the
+    guesswork in calling the service.
+externalDocs:
+  description: Find out how to create a GitHub repo for your OpenAPI definition.
+  url: 'https://github.com/Rebilly/generator-openapi-repo'
+tags:
+  - name: Echo
+    description: Example echo operations
+  - name: User
+    description: Operations about user
+servers:
+  - url: 'http://example.com/api/v1'
+  - url: 'https://example.com/api/v1'
 paths:
-  /:
+  '/users/{username}':
+    parameters:
+      - name: pretty_print
+        in: query
+        description: Pretty print response
+        schema:
+          type: boolean
     get:
-      summary: landing page of this API
-      description: >-
-        The landing page provides links to the API definition, the conformance
-        declaration and the metadata about the processes offered by this service.
-      operationId: getLandingPage
       tags:
-        - Capabilities
-      responses:
-        200:
-          $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/responses/LandingPage.yaml"
-        500:
-          $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/responses/ServerError.yaml"
-  /conformance:
-    get:
-      summary: information about standards that this API conforms to
-      description: >-
-        Lists all requirements classes specified in the standard (e.g., OGC API - Processes
-        Part 1: Core) that the server conforms to
-      operationId: getConformanceClasses
-      tags:
-        - ConformanceDeclaration
-      responses:
-        200:
-          $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/responses/ConformanceDeclaration.yaml"
-        500:
-          $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/responses/ServerError.yaml"
-  /processes:
-    get:
-      summary: retrieve available processes
-      description: >-
-        Lists all available processes this server offers.
-      operationId: getProcesses
-      tags:
-        - ProcessCollection
-      responses:
-        200:
-          $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/responses/ProcessCollection.yaml"
-  /processes/{processId}:
-    get:
-      summary: retrieve a process description
-      description: >-
-        Describes a process.
-      operationId: getProcessDescription
-      tags:
-        - ProcessDescription
+        - User
+      summary: Get user by user name
+      description: |
+        Some description of the operation. 
+        You can use `markdown` here.
+      operationId: getUserByName
       parameters:
-        - $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/parameters/processId.yaml"
+        - name: username
+          in: path
+          description: The name that needs to be fetched
+          required: true
+          schema:
+            type: string
+        - name: with_email
+          in: query
+          description: Filter users without email
+          schema:
+            type: boolean
+      security:
+        - main_auth:
+            - 'read:users'
+        - api_key: []
       responses:
-        200:
-          $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/responses/ProcessDescription.yaml"
-        404:
-          $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/responses/NotFound.yaml"
-  /processes/{processId}/jobs:
-    get:
-      summary: retrieve the list of jobs for a process.
-      description: >-
-        Lists available jobs of a process.
-      operationId: getJobs
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              example:
+                username: user1
+                email: user@example.com
+        '403':
+          description: Forbidden
+        '404':
+          description: User not found
+    put:
       tags:
-        - JobCollection
+        - User
+      summary: Updated user
+      description: This can only be done by the logged in user.
+      operationId: updateUser
       parameters:
-        - $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/parameters/processId.yaml"
+        - name: username
+          in: path
+          description: The name that needs to be updated
+          required: true
+          schema:
+            type: string
+      security:
+        - main_auth:
+            - 'write:users'
       responses:
-        200:
-          $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/responses/JobCollection.yaml"
-        404:
-          $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/responses/NotFound.yaml"
-    post:
-      summary: execute a process.
-      description: >-
-        Submits a new job.
-      operationId: execute
-      tags:
-        - Execute
-      parameters:
-        - $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/parameters/processId.yaml"
+        '200':
+          description: OK
+        '400':
+          description: Invalid user supplied
+        '404':
+          description: User not found
       requestBody:
-        description: Mandatory execute request JSON
-        required: true
         content:
           application/json:
             schema:
-              $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/schemas/execute.yaml"
-      responses:
-        200:
-          $ref: 'https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/responses/ExecuteSync.yaml'
-        201:
-          $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/responses/ExecuteAsync.yaml"
-        404:
-          $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/responses/NotFound.yaml"
-        500:
-          $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/responses/ServerError.yaml"
-      callbacks:
-        jobCompleted:
-          "{$request.body#/subscriber/successUri}":
-            post:
-              requestBody:
-                content:
-                  application/json:
-                    schema:
-                      $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/schemas/result.yaml"
-              responses:
-                200:
-                  description: Results received successfully
-  /processes/{processId}/jobs/{jobId}:
-    get:
-      summary: retrieve the status of a job
-      description: >-
-        Shows the status of a job.
-      operationId: getStatus
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+        description: Updated user object
+        required: true
+  /echo:
+    post:
       tags:
-        - Status
-      parameters:
-        - $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/parameters/processId.yaml"
-        - $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/parameters/jobId.yaml"
+        - Echo
+      summary: Echo test
+      description: Receive the exact message you've sent
+      operationId: echo
+      security:
+        - api_key: []
+        - basic_auth: []
       responses:
-        200:
-          $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/responses/Status.yaml"
-        404:
-          $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/responses/NotFound.yaml"
-        500:
-          $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/responses/ServerError.yaml"
-    delete:
-      summary: cancel a job execution, remove a finished job
-      description: >-
-        Cancel a job execution and remove it from the jobs list.
-      operationId: dismiss
-      tags:
-        - Dismiss
-      parameters:
-        - $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/parameters/processId.yaml"
-        - $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/parameters/jobId.yaml"
-      responses:
-        200:
-          $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/responses/Status.yaml"
-        404:
-          $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/responses/NotFound.yaml"
-        500:
-          $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/responses/ServerError.yaml"
-  /processes/{processId}/jobs/{jobId}/results:
-    get:
-      summary: retrieve the result(s) of a job
-      description: >-
-        Lists available results of a job. In case of a failure, lists exceptions instead.
-      operationId: getResult
-      tags:
-        - Result
-      parameters:
-        - $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/parameters/processId.yaml"
-        - $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/parameters/jobId.yaml"
-      responses:
-        200:
-          $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/responses/Results.yaml"
-        404:
-          $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/responses/NotFound.yaml"
-        500:
-          $ref: "https://raw.githubusercontent.com/opengeospatial/wps-rest-binding/master/core/openapi/responses/ServerError.yaml"
-servers:
-  # Added by API Auto Mocking Plugin
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/geoprocessing/WPS/0.01
-  - description: 52°North demo server
-    url: http://geoprocessing.demo.52north.org:8080/javaps/rest/
+        '200':
+          description: OK
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              $ref: '#/components/headers/ExpiresAfter'
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                response:
+                  value: Hello world!
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              example: Hello world!
+          application/xml:
+            schema:
+              type: string
+              example: Hello world!
+        description: Echo payload
+        required: true
+components:
+  securitySchemes:
+    main_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: 'http://example.com/api/oauth/dialog'
+          scopes:
+            'read:users': read users info
+            'write:users': modify or remove users
+    api_key:
+      type: apiKey
+      in: header
+      name: api_key
+    basic_auth:
+      type: http
+      scheme: basic
+  schemas:
+    Email:
+      description: User email address
+      type: string
+      format: test
+      example: john.smith@example.com
+    User:
+      type: object
+      properties:
+        username:
+          description: User supplied username
+          type: string
+          minLength: 4
+          example: John78
+        firstName:
+          description: User first name
+          type: string
+          minLength: 1
+          example: John
+        lastName:
+          description: User last name
+          type: string
+          minLength: 1
+          example: Smith
+        email:
+          $ref: '#/components/schemas/Email'
+  headers:
+    ExpiresAfter:
+      description: date in UTC when token expires
+      schema:
+        type: string
+        format: date-time
