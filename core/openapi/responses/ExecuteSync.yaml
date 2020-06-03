@@ -19,18 +19,14 @@ ExecuteSync:
           - type: boolean
 components:
   schemas:
-    Dog:
+    result:
       type: object
       properties:
-        bark:
-          type: boolean
-        breed:
+        resulttext:
           type: string
-          enum: [Dingo, Husky, Retriever, Shepherd]
-    Cat:
+          enum: [pass, fail]
+    exception:
       type: object
       properties:
-        hunts:
-          type: boolean
         age:
-          type: integer
+          type: string
