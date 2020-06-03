@@ -20,17 +20,6 @@ ExecuteSync:
 components:
   schemas:
     result:
-      type: object
-      properties:
-        bark:
-          type: boolean
-        breed:
-          type: string
-          enum: [Dingo, Husky, Retriever, Shepherd]
+      type: string
     exception:
-      type: object
-      properties:
-        hunts:
-          type: boolean
-        age:
-          type: integer
+      type: string
