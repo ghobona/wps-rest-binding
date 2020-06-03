@@ -28,5 +28,5 @@ components:
     exception:
       type: object
       properties:
-        age:
+        message:
           type: string
