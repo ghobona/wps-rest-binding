@@ -17,3 +17,20 @@ ExecuteSync:
             description: Text-based single data output.
           - type: number
           - type: boolean
+components:
+  schemas:
+    result:
+      type: object
+      properties:
+        bark:
+          type: boolean
+        breed:
+          type: string
+          enum: [Dingo, Husky, Retriever, Shepherd]
+    exception:
+      type: object
+      properties:
+        hunts:
+          type: boolean
+        age:
+          type: integer
