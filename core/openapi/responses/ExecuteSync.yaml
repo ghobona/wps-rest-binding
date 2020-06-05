@@ -27,6 +27,10 @@ components:
           enum: [pass, fail]
     exception:
       type: object
+      required:
+      - code
       properties:
-        message:
+        code:
           type: string
+        description:
+          type: string      
